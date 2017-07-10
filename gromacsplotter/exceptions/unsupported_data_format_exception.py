@@ -1,0 +1,2 @@
+class UnsupportedDataFormatException(Exception):
+    pass

@@ -20,4 +20,7 @@ setup(name='gromacsplotter',
       scripts=[],
       install_requires=['numpy',
                         "matplotlib"],
+      entry_points = {
+          'console_scripts': ["gromacsplotter = gromacsplotter.plot_xvg_data:main"]
+      },
       zip_safe=False)
