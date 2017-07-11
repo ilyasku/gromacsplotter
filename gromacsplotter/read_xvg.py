@@ -37,13 +37,29 @@ def read_xvg(file_name):
 
     data_lines = lines[i:]
 
-    data = np.empty(len(data_lines), dtype=dtypes)
+    if len(dtypes) > 1:
+        data = _read_data_into_array_with_dtypes(data_lines, dtypes)
+    else:
+        data = _read_data_into_array_without_dtypes(data_lines)
+                
+    return data, plot_kwargs, plot_operations
 
-    for j in range(len(data_lines)):
+
+def _read_data_into_array_with_dtypes(data_lines, dtypes):
+    data = np.empty(len(data_lines), dtype=dtypes)
+    for j in range(len(data_lines)):        
         data_line_j = np.fromstring(data_lines[j], dtype=float, sep=" ")
         for k in range(len(dtypes)):
             data[dtypes[k][0]][j] = data_line_j[k]
-    return data, plot_kwargs, plot_operations
+    return data
+
+
+def _read_data_into_array_without_dtypes(data_lines):
+    first_data_line = np.fromstring(data_lines[0], dtype=float, sep=" ")
+    data = np.empty((len(first_data_line), len(data_lines)), dtype=np.float)
+    for j in range(len(data_lines)):
+        data[:, j] = np.fromstring(data_lines[j], dtype=float, sep=" ")
+    return data
 
 
 def _update_plot_kwargs_and_operations(plot_kwargs: dict, plot_operations: dict, line: str):

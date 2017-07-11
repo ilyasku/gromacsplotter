@@ -2,8 +2,12 @@ def plot_xvg_data(ax, data, plot_kwargs, plot_operations):
 
     names = data.dtype.names
 
-    for i in range(1, len(names)):
-        ax.plot(data[names[0]], data[names[i]], label=names[i], **plot_kwargs)
+    if names:
+        for i in range(1, len(names)):
+            ax.plot(data[names[0]], data[names[i]], label=names[i], **plot_kwargs)
+    else:
+        for i in range(1, data.shape[0]):
+            ax.plot(data[0, :], data[i, :])
 
     for function, arguments in plot_operations.values():
         function(ax, *arguments)
